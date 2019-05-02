@@ -56,18 +56,18 @@ function promptUserPurchase() {
 		// Query db to confirm that the given item ID exists in the desired quantity
 		var queryStr = 'SELECT * FROM products WHERE ?';
 
-		connection.query(queryStr, {item_id: item}, function(err, data) {
+		connection.query(queryStr, {item_id: item}, function(err, res) {
 			if (err) throw err;
 
-			// If the user has selected an invalid item ID, data array will be empty
-			// console.log('data = ' + JSON.stringify(data));
+			// If the user has selected an invalid item ID, res array will be empty
+			// console.log('res = ' + JSON.stringify(res));
 
-			if (data.length === 0) {
+			if (res.length === 0) {
 				console.log('ERROR: Invalid Item ID. Please select a valid Item ID.');
 				displayInventory();
 
 			} else {
-				var productData = data[0];
+				var productData = res[0];
 
 				// console.log('productData = ' + JSON.stringify(productData));
 				// console.log('productData.stock_quantity = ' + productData.stock_quantity);
@@ -81,7 +81,7 @@ function promptUserPurchase() {
 					// console.log('updateQueryStr = ' + updateQueryStr);
 
 					// Update the inventory
-					connection.query(updateQueryStr, function(err, data) {
+					connection.query(updateQueryStr, function(err, res) {
 						if (err) throw err;
 
 						console.log('Your oder has been placed! Your total is $' + productData.price * quantity);
@@ -111,27 +111,15 @@ function displayInventory() {
 	queryStr = 'SELECT * FROM products';
 
 	// Make the db query
-	connection.query(queryStr, function(err, data) {
+	connection.query(queryStr, function(err, res) {
 		if (err) throw err;
         console.log('_.~"~._.~"~._.~Welcome to Bamazon~._.~"~._.~"~._')
         console.log('---------------------------------------------------------------------------------------------------')
   		console.log('Existing Inventory: ');
         console.log('...................\n');
-        for (var i = 0; i < data.length; i++) {
-			console.log("Item ID: " + data[i].item_id + " || Product Name: " +data[i].product_name + " || Price: " +data[i].price + " || Quantity: " +data[i].stock_quantity);
+        for (var i = 0; i < res.length; i++) {
+			console.log("Item ID: " + res[i].item_id + " || Product Name: " +res[i].product_name + " || Price: " +res[i].price + " || Quantity: " +res[i].stock_quantity);
 		}
-
-		// var strOut = '';
-		// for (var i = 0; i < data.length; i++) {
-		// 	strOut = '';
-		// 	strOut += 'Item ID: ' + data[i].item_id + ' || ';
-		// 	strOut += 'Product Name: ' + data[i].product_name + ' || ';
-		// 	strOut += 'Department: ' + data[i].department_name + ' || ';
-		// 	strOut += 'Price: $' + data[i].price + '\n';
-
-		// 	console.log(strOut);
-		// }
-
 	  	console.log("---------------------------------------------------------------------\n");
 
 	  	//Prompt the user for item/quantity they would like to purchase
