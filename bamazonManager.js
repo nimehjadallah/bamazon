@@ -15,7 +15,7 @@ var connection = mysql.createConnection({
   // Root is default username.
   user: 'root',
   // Password is empty string.
-  password: '',
+  password: 'kulmloveJ@89',
   database: 'bamazon'
 });
 
@@ -41,7 +41,8 @@ var selectAction = function() {
 			"View Products for Sale",
 			"View Low Inventory",
 			"Add to Inventory",
-			"Add New Product"
+            "Add New Product",
+            "Exit"
 		]
 	}
 	]).then(function(answer) {
@@ -62,8 +63,14 @@ var selectAction = function() {
 
 		    case "Add New Product":
 		    	addProduct();
+                break;
+                  
+            
+            case "Exit":
+		    	exit();
 		      	break;
-		}
+        }
+    
 	});
 };
 
@@ -77,7 +84,8 @@ var viewProducts = function() {
 		}
 
 		// Lets manager select new action.
-		selectAction();
+        selectAction();
+        // connection.end();
 	});
 };
 
@@ -91,7 +99,8 @@ var viewLowInventory = function() {
 		}
 
 		// Lets manager select new action.
-		selectAction();
+        selectAction();
+        // connection.end();
 	});
 };
 
@@ -139,7 +148,8 @@ var addInventory = function() {
 				} else {
 
 					// Lets manager select new action.
-					selectAction();
+                    selectAction();
+                    // connection.end();
 				}
 			});
 			
@@ -196,7 +206,8 @@ var checkIfDepartmentExists = function(departmentName) {
 		for (var i = 0; i < res.length; i++) {
 			if (departmentName === res[i].department_name) {
 				console.log("This department already exists so no need to add it: " + departmentName);
-				selectAction();
+                selectAction();
+                // connection.end();
 			}
 		}
 
@@ -219,7 +230,17 @@ var addNewDepartment = function(departmentName) {
 				throw err;
 			} else {
 				console.log("New department was added successfully!");
-				selectAction();
+                selectAction();
+                // connection.end();
 			}
 		});
+};
+
+
+
+var exit = function(){
+
+    connection.end();
+    // selectAction();
+
 };
